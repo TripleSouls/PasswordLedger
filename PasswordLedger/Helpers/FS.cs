@@ -39,17 +39,17 @@ namespace PasswordLedger.Utils
 
         public string ReadFile()
         {
+            if(!isFileExists) return "";
             string rData = "";
-            if(isFileExists)
+
+            try
             {
-                try
-                {
-                    rData = File.ReadAllText(this.fileLocation);
-                }catch (Exception ex)
-                {
-                    this.SetErrors(ex);
-                }
+                rData = File.ReadAllText(this.fileLocation);
+            }catch (Exception ex)
+            {
+                this.SetErrors(ex);
             }
+
             return rData;
         }
 
