@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,29 +9,36 @@ namespace PasswordLedger.Model
 {
     class Credentials
     {
-        public string Title     = "";
-        public string Username  = "";
-        public string Password  = "";
-        public string Extended  = "";
-    
-        public Credentials() {
-            Title = Username = Password = Extended = "";
+        public List<Credential> credentials = new List<Credential>();
+
+        Credentials() { }
+        
+        Credentials(List<Credential> credentials) {
+            this.credentials = credentials;
         }
 
-        public Credentials(string title = "", string username = "", string password = "", string extended = "") {
-            Title       = title;
-            Username    = username;
-            Password    = password;
-            Extended    = extended;
-        }
+        public void Add(Credential credential) => credentials.Add(credential);
+        
+        public bool Remove(Credential credential) => credentials.Remove(credential);
 
-        public void Setter(string? title = null, string? username = null, string? password = null, string? extended = null)
+        public bool Remove(string Title)
         {
-            if(title    != null) Title      = title;
-            if(username != null) Username   = username;
-            if(password != null) Password   = password;
-            if(extended != null) Extended   = extended;
+            bool rData = false;
+            int index = 0;
+            foreach (var credential in credentials)
+            {
+                if(credential.Title == Title)
+                {
+                    credentials.RemoveAt(index);
+                    rData = true;
+                    break;
+                }
+                index++;
+            }
+            return rData;
         }
+
+        public void SetList(List<Credential> credentials) => this.credentials = credentials;
 
     }
 }
