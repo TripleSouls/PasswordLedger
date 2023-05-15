@@ -1,3 +1,5 @@
+using PasswordLedger.Helpers;
+using PasswordLedger.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +12,15 @@ namespace PasswordLedger.Model
     class Credentials
     {
         public List<Credential> credentials = new List<Credential>();
+        string ledgerFile = "";
 
-        Credentials() { }
+        public Credentials() { }
         
-        Credentials(List<Credential> credentials) {
+        public Credentials(List<Credential> credentials) {
             this.credentials = credentials;
         }
+
+        public void SetFileLocation(string lFile) => ledgerFile = lFile;
 
         public void Add(Credential credential) => credentials.Add(credential);
         
@@ -39,6 +44,13 @@ namespace PasswordLedger.Model
         }
 
         public void SetList(List<Credential> credentials) => this.credentials = credentials;
+
+        public void LoadListFromFile()
+        {
+            FS fs = new FS(this.ledgerFile);
+            this.SetList(ModelConverter.JSONToListCredential(fs.ReadFile()));
+            fs = null;
+        }
 
     }
 }
