@@ -38,10 +38,7 @@ namespace PasswordLedger.Utils
             catch (Exception ex) { Console.WriteLine(); }
         }
 
-        public List<Credential> GetCredentials()
-        {
-            FS fs = new FS(this.ledgerFile);
-            return ModelConverter.JSONToListCredential(fs.ReadFile());
-        }
+        public string GetLedgerFile() => this.ledgerFile;
+
     }
 }
