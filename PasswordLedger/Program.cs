@@ -1,24 +1,23 @@
+using PasswordLedger;
 using PasswordLedger.Helpers;
 using PasswordLedger.Model;
 using PasswordLedger.Utils;
 
 public class Program
 {
+
     public static void Main()
     {
+        ProgramUI programUI = new ProgramUI();
+        
         Bootstrap bootstrap = new Bootstrap(Functions.GetExePath(), "ledger.ledger");
         bootstrap.Start();
 
-        Credentials credentials = new Credentials();
-        credentials.SetFileLocation(bootstrap.GetLedgerFile());
-        credentials.LoadListFromFile();
-        credentials.credentials.ForEach(x =>  Console.WriteLine(x.Title + " " + x.Username + " -> " + x.Password));
+        // Ana lokasyonu tanimla
+        Credentials.Instance.SetFileLocation(bootstrap.GetLedgerFile());
+        // Dosyadan oku ve credentialse kaydet
+        Credentials.Instance.LoadListFromFile();
 
-        string data = ModelConverter.CredentialListToJSON(credentials.credentials);
-        Console.WriteLine(data);
-
-        Security s = new Security("test");
-        Console.WriteLine(s.Encode(data));
-        Console.WriteLine(s.Decode(s.Encode(data)));
+        programUI.MainUI();
     }
 }
