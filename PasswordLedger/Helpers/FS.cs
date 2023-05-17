@@ -1,6 +1,7 @@
 using PasswordLedger.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace PasswordLedger.Helpers
         public string lastErrorMSG = "";
         public Exception? lastException = null;
 
-        public FS() { }
+        public FS() {  }
 
         public FS(string fileLocation) {
             this.SetFile(fileLocation);
@@ -51,7 +52,27 @@ namespace PasswordLedger.Helpers
                 this.SetErrors(ex);
             }
 
+            rData = Security.Instance.Decode(rData);
+
             return rData;
+        }
+
+        public void WriteFile(string JSONString)
+        {
+            JSONString = Security.Instance.Encode(JSONString);
+
+
+            if(!isFileExists)
+            {
+                CreateFileIfNotExists(fileLocation, JSONString);
+                return;
+            }
+
+            FileStream filestream = File.OpenWrite(fileLocation);
+            StreamWriter sw = new StreamWriter(filestream);
+            sw.Write(JSONString);
+            sw.Close();
+            filestream.Close();
         }
 
         private void SetErrors(Exception ex)
@@ -78,6 +99,8 @@ namespace PasswordLedger.Helpers
 
         public static OperationResult CreateFileIfNotExists(string path, string data = "")
         {
+            data = Security.Instance.Encode(data);
+
             try
             {
                 if (File.Exists(path)) { }

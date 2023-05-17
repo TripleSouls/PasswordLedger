@@ -1,3 +1,4 @@
+using PasswordLedger.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,26 @@ namespace PasswordLedger.Helpers
 {
     class Security
     {
+        private static Security instance;
+
+        public static Security Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    instance = new Security();
+                }
+                return instance;
+            }
+        }
 
         private string key;
         private const int ivLength = 16;
 
-        public Security() { }
-
-        public Security(string key)
+        public Security()
         {
-            this.SetKey(key);
+            this.SetKey("Hello");
         }
 
         public void SetKey(string gkey)
