@@ -15,6 +15,7 @@ namespace PasswordLedger
             while (true)
             {
                 Console.Clear();
+                Console.WriteLine("0 - Cikis");
                 Console.WriteLine("1- Hesap bilgisi Ekle");
 
                 if (Credentials.Instance.GetCredentials().Count > 0)
@@ -27,7 +28,7 @@ namespace PasswordLedger
                 string inputVal = Console.ReadLine().Replace(" ", "");
                 inputValueForMenu = Convert.ToInt32(inputVal);
 
-                if (inputValueForMenu < 1 || (Credentials.Instance.GetCredentials().Count>0 ? inputValueForMenu > 4 : inputValueForMenu>1))
+                if (inputValueForMenu < 0 || (Credentials.Instance.GetCredentials().Count>0 ? inputValueForMenu > 4 : inputValueForMenu>1))
                     continue;
 
                 RunMenu(inputValueForMenu);
@@ -36,9 +37,12 @@ namespace PasswordLedger
 
         private void RunMenu(int inputValueForMenu)
         {
-            inputValueForMenu = Math.Clamp(inputValueForMenu, 1, 4);
+            inputValueForMenu = Math.Clamp(inputValueForMenu, 0, 4);
             switch (inputValueForMenu)
             {
+                case 0:
+                    Environment.Exit(0);
+                    break;
                 case 1:
                     MenuAdd();
                     break;
